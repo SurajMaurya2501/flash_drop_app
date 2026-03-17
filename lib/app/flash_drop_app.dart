@@ -1,0 +1,24 @@
+import 'package:flash_drop_app/features/flash_drop/domain/usecases/flash_drop_usecases.dart';
+import 'package:flash_drop_app/features/flash_drop/presentation/blocs/flash_drop_bloc/flash_drop_bloc.dart';
+import 'package:flash_drop_app/features/flash_drop/presentation/blocs/flash_drop_bloc/flash_drop_event.dart';
+import 'package:flash_drop_app/features/flash_drop/presentation/screens/flash_drop_main_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+class LuxuryFlashDropApp extends StatelessWidget {
+  const LuxuryFlashDropApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      showPerformanceOverlay: true,
+      title: 'Luxury Flash Drop',
+      debugShowCheckedModeBanner: false,
+      // theme: buildLuxuryTheme(),
+      home: BlocProvider(
+        create: (_) => FlashDropBloc(flashDropUsecases: FlashDropUsecases())..add(FetchHistoryData()),
+        child: const FlashDropMainScreen(),
+      ),
+    );
+  }
+}
