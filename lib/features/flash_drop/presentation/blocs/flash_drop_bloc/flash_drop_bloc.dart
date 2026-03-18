@@ -15,6 +15,8 @@ class FlashDropBloc extends Bloc<FlashDropEvent, FlashDropState> {
     : super(FlashDropState.initial()) {
     on<FetchHistoryData>(_onFetchHistoryData);
     on<FetchLiveData>(_onFetchLiveData);
+    on<LuxuryPurchaseRequested>(_onPurchaseRequested);
+    on<LuxuryPurchaseVerificationCompleted>(_onPurchaseVerificationCompleted);
   }
 
   FutureOr<void> _onFetchHistoryData(
@@ -67,5 +69,32 @@ class FlashDropBloc extends Bloc<FlashDropEvent, FlashDropState> {
         liveData: cappedLivePoints,
       ),
     );
+  }
+
+  Future<void> _onPurchaseRequested(
+    LuxuryPurchaseRequested event,
+    Emitter<FlashDropState> emit,
+  ) async {
+    if (!state.canSecureItem) {
+      return;
+    }
+
+    emit(state.copyWith(purchaseStatus: PurchaseLifecycleStatus.verifying));
+
+    await Future<void>.delayed(const Duration(milliseconds: 1200));
+    add(LuxuryPurchaseVerificationCompleted());
+  }
+
+  void _onPurchaseVerificationCompleted(
+    LuxuryPurchaseVerificationCompleted event,
+    Emitter<FlashDropState> emit,
+  ) {
+    emit(state.copyWith(purchaseStatus: PurchaseLifecycleStatus.success));
+  }
+
+  @override
+  Future<void> close() async {
+    await _liveSubscription?.cancel();
+    return super.close();
   }
 }

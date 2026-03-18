@@ -16,7 +16,9 @@ class LuxuryFlashDropApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       // theme: buildLuxuryTheme(),
       home: BlocProvider(
-        create: (_) => FlashDropBloc(flashDropUsecases: FlashDropUsecases())..add(FetchHistoryData()),
+        create: (_) =>
+            FlashDropBloc(flashDropUsecases: FlashDropUsecases())
+              ..add(FetchHistoryData()),
         child: const FlashDropMainScreen(),
       ),
     );

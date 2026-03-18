@@ -1,6 +1,9 @@
 import 'package:flash_drop_app/features/flash_drop/presentation/blocs/flash_drop_bloc/flash_drop_bloc.dart';
+import 'package:flash_drop_app/features/flash_drop/presentation/blocs/flash_drop_bloc/flash_drop_event.dart';
 import 'package:flash_drop_app/features/flash_drop/presentation/blocs/flash_drop_bloc/flash_drop_state.dart';
+import 'package:flash_drop_app/features/flash_drop/presentation/widgets/hold_to_secure_button.dart';
 import 'package:flash_drop_app/features/flash_drop/presentation/widgets/inventory_pill.dart';
+import 'package:flash_drop_app/features/flash_drop/presentation/widgets/luxury_live_chart.dart';
 import 'package:flash_drop_app/features/flash_drop/presentation/widgets/luxury_price_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -92,13 +95,13 @@ class FlashDropMainScreen extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 22),
-                        // SizedBox(
-                        //   height: 300,
-                        //   child: LuxuryLiveChart(
-                        //     historicalSeries: state.historicalSeries,
-                        //     liveSeries: state.liveSeries,
-                        //   ),
-                        // ),
+                        SizedBox(
+                          height: 300,
+                          child: LuxuryLiveChart(
+                            historicalSeries: state.historyData ?? [],
+                            liveSeries: state.liveSeries,
+                          ),
+                        ),
                         const SizedBox(height: 26),
                         Text(
                           'Limited release note',
@@ -115,15 +118,15 @@ class FlashDropMainScreen extends StatelessWidget {
                               ),
                         ),
                         const SizedBox(height: 28),
-                        // HoldToSecureButton(
-                        //   purchaseStatus: state.purchaseStatus,
-                        //   enabled: state.canSecureItem,
-                        //   onHoldCompleted: () {
-                        //     context.read<LuxuryDropBloc>().add(
-                        //       const LuxuryPurchaseRequested(),
-                        //     );
-                        //   },
-                        // ),
+                        HoldToSecureButton(
+                          purchaseStatus: state.purchaseStatus,
+                          enabled: state.canSecureItem,
+                          onHoldCompleted: () {
+                            context.read<FlashDropBloc>().add(
+                              LuxuryPurchaseRequested(),
+                            );
+                          },
+                        ),
                         const SizedBox(height: 18),
                       ]),
                     ),

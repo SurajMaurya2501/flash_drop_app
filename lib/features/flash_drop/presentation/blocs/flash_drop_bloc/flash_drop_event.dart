@@ -9,3 +9,7 @@ class FetchLiveData extends FlashDropEvent {
 
   FetchLiveData({required this.flashDropEntity});
 }
+
+class LuxuryPurchaseRequested extends FlashDropEvent {}
+
+class LuxuryPurchaseVerificationCompleted extends FlashDropEvent {}

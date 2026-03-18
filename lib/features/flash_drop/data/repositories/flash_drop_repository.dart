@@ -34,10 +34,10 @@ class FlashDropRepository implements FlashDropRepositoryInterface {
 
   @override
   Future<List<HistoricalBidPoint>> getHistoricalData() async {
-    final data = await mockData.fetchMassivePayload();
-    final isolateData = await Isolate.run(
-      () => parseHistoricalBidData(payload: data),
-    );
+    final isolateData = await Isolate.run(() async {
+      final data = await mockData.fetchMassivePayload();
+      return parseHistoricalBidData(payload: data);
+    });
     return isolateData;
   }
 
