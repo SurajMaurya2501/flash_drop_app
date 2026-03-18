@@ -65,7 +65,9 @@ class FlashDropState extends Equatable {
   List<Object?> get props => [
     flashDropEntity,
     historyData,
+    liveSeries,
     errorMessage,
     status,
+    purchaseStatus,
   ];
 }

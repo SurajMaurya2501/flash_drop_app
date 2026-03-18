@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:flash_drop_app/features/flash_drop/domain/entities/flash_drop_entity.dart';
 import 'package:flash_drop_app/features/flash_drop/domain/entities/historical_bid_point.dart';
 import 'package:flash_drop_app/features/flash_drop/domain/usecases/flash_drop_usecases.dart';
@@ -27,6 +26,8 @@ class FlashDropBloc extends Bloc<FlashDropEvent, FlashDropState> {
       return;
     }
 
+    bool isSoldOut = false;
+
     try {
       emit(state.copyWith(status: FlashDropStatus.loading));
       final historyData = await flashDropUsecases.getFlashDropHistoricalData();
@@ -37,10 +38,14 @@ class FlashDropBloc extends Bloc<FlashDropEvent, FlashDropState> {
       _liveSubscription = flashDropUsecases.getFlashDropStreamData().listen((
         event,
       ) {
-        add(FetchLiveData(flashDropEntity: event));
+        if (!isSoldOut) {
+          isSoldOut = event.remainingInventory == 0;
+          add(FetchLiveData(flashDropEntity: event));
+        } else {
+          _liveSubscription!.pause();
+        }
       });
     } catch (e) {
-      log(e.toString());
       emit(
         state.copyWith(
           status: FlashDropStatus.error,
