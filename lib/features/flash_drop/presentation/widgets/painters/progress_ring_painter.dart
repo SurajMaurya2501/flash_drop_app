@@ -18,7 +18,7 @@ class ProgressRingPainter extends CustomPainter {
     final progressPaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
-      ..strokeWidth = 5
+      ..strokeWidth = 4
       ..shader = const LinearGradient(
         colors: <Color>[Color(0xFFF7DEAC), Color(0xFFE4B56A)],
       ).createShader(rect);

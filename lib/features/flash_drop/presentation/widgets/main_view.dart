@@ -34,9 +34,7 @@ class MainView extends StatelessWidget {
             delegate: SliverChildListDelegate.fixed(<Widget>[
               Text(
                 'Prime Drop',
-                style: Theme.of(
-                  context,
-                ).textTheme.headlineLarge?.copyWith(color: Colors.white),
+                style: Theme.of(context).textTheme.headlineLarge,
               ),
               const SizedBox(height: 8),
               Text(

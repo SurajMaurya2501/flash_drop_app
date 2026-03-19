@@ -1,3 +1,4 @@
+import 'package:flash_drop_app/core/luxury_theme.dart';
 import 'package:flash_drop_app/features/flash_drop/data/repositories/flash_drop_repository.dart';
 import 'package:flash_drop_app/features/flash_drop/domain/use_cases/flash_drop_usecases.dart';
 import 'package:flash_drop_app/features/flash_drop/presentation/blocs/flash_drop_bloc/flash_drop_bloc.dart';
@@ -15,7 +16,7 @@ class LuxuryFlashDropApp extends StatelessWidget {
       showPerformanceOverlay: true,
       title: 'Luxury Flash Drop',
       debugShowCheckedModeBanner: false,
-      // theme: buildLuxuryTheme(),
+      theme: buildLuxuryTheme(),
       home: BlocProvider(
         create: (_) => FlashDropBloc(
           flashDropUsecases: FlashDropUsecases(FlashDropRepository()),
