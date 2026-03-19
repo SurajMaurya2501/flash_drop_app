@@ -14,6 +14,7 @@ class LuxuryFlashDropApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       // showPerformanceOverlay: true,
+      title: 'Luxury Flash Drop',
       debugShowCheckedModeBanner: false,
       theme: buildLuxuryTheme(),
       home: BlocProvider(
