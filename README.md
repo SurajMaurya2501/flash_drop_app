@@ -17,10 +17,10 @@ Luxury-themed Flutter demo that simulates a limited-inventory flash drop with:
 
 ## Tech Stack
 
-- Flutter (Material 3)
-- Dart SDK `^3.11.1`
-- `flutter_bloc` for state orchestration
-- `equatable` for state comparison
+- Flutter SDK `^3.41.5`
+- Dart SDK `^3.11.3`
+- `flutter_bloc` 
+- `equatable`
 
 ## Architecture
 
@@ -84,14 +84,6 @@ Run the app:
 
 ```bash
 flutter run
-```
-
-## Testing
-
-Run all tests:
-
-```bash
-flutter test
 ```
 
 ## Build
