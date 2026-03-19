@@ -204,7 +204,7 @@ class _ProgressRingPainter extends CustomPainter {
 
     final path = Path()..addRRect(outer.deflate(1.5));
     final metrics = path.computeMetrics().first;
-    final segment = metrics.extractPath(0, metrics.length * progress);
+    final segment = metrics.extractPath(1, metrics.length * progress);
     canvas.drawPath(segment, progressPaint);
   }
 

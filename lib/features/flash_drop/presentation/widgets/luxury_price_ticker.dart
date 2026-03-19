@@ -22,14 +22,12 @@ class LuxuryPriceTicker extends StatelessWidget {
       duration: const Duration(milliseconds: 420),
       curve: Curves.easeOutCubic,
       builder: (context, animatedPrice, _) {
-        return AnimatedDefaultTextStyle(
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
+        return Text(
+          '\$${animatedPrice.toStringAsFixed(2)}',
           style: Theme.of(context).textTheme.headlineLarge!.copyWith(
             color: trendColor,
             fontWeight: FontWeight.w700,
           ),
-          child: Text('\$${animatedPrice.toStringAsFixed(2)}'),
         );
       },
     );
