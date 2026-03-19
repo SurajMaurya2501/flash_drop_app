@@ -1,4 +1,5 @@
 import 'package:flash_drop_app/features/flash_drop/presentation/blocs/flash_drop_bloc/flash_drop_state.dart';
+import 'package:flash_drop_app/features/flash_drop/presentation/widgets/painters/progress_ring_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -42,45 +43,6 @@ class _HoldToSecureButtonState extends State<HoldToSecureButton>
     }
   }
 
-  void _onProgress() {
-    final progress = _holdController.value;
-    for (final milestone in <int>[25, 50, 75]) {
-      if (progress >= milestone / 100 &&
-          !_hapticMilestones.contains(milestone)) {
-        HapticFeedback.selectionClick();
-        _hapticMilestones.add(milestone);
-      }
-    }
-  }
-
-  void _onStatusChanged(AnimationStatus status) {
-    if (status == AnimationStatus.completed && !_triggered) {
-      _triggered = true;
-      HapticFeedback.heavyImpact();
-      widget.onHoldCompleted();
-    }
-  }
-
-  void _startHold() {
-    if (!widget.enabled ||
-        widget.purchaseStatus != PurchaseLifecycleStatus.idle) {
-      return;
-    }
-    _triggered = false;
-    _hapticMilestones.clear();
-    HapticFeedback.mediumImpact();
-    _holdController
-      ..reset()
-      ..forward();
-  }
-
-  void _cancelHold() {
-    if (_holdController.isAnimating && !_triggered) {
-      _holdController.reverse();
-      HapticFeedback.lightImpact();
-    }
-  }
-
   @override
   void dispose() {
     _holdController
@@ -106,7 +68,7 @@ class _HoldToSecureButtonState extends State<HoldToSecureButton>
           animation: _holdController,
           builder: (context, _) {
             return CustomPaint(
-              painter: _ProgressRingPainter(progress: _holdController.value),
+              painter: ProgressRingPainter(progress: _holdController.value),
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   gradient: purchaseStatus == PurchaseLifecycleStatus.success
@@ -175,41 +137,43 @@ class _HoldToSecureButtonState extends State<HoldToSecureButton>
         );
     }
   }
-}
 
-class _ProgressRingPainter extends CustomPainter {
-  const _ProgressRingPainter({required this.progress});
-
-  final double progress;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final rect = Rect.fromLTWH(0, 0, size.width, size.height);
-    final outer = RRect.fromRectAndRadius(rect, const Radius.circular(22));
-
-    final trackPaint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2
-      ..color = const Color(0x335F7598);
-
-    final progressPaint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round
-      ..strokeWidth = 5
-      ..shader = const LinearGradient(
-        colors: <Color>[Color(0xFFF7DEAC), Color(0xFFE4B56A)],
-      ).createShader(rect);
-
-    canvas.drawRRect(outer.deflate(1), trackPaint);
-
-    final path = Path()..addRRect(outer.deflate(1.5));
-    final metrics = path.computeMetrics().first;
-    final segment = metrics.extractPath(1, metrics.length * progress);
-    canvas.drawPath(segment, progressPaint);
+  void _onProgress() {
+    final progress = _holdController.value;
+    for (final milestone in <int>[25, 50, 75]) {
+      if (progress >= milestone / 100 &&
+          !_hapticMilestones.contains(milestone)) {
+        HapticFeedback.selectionClick();
+        _hapticMilestones.add(milestone);
+      }
+    }
   }
 
-  @override
-  bool shouldRepaint(covariant _ProgressRingPainter oldDelegate) {
-    return oldDelegate.progress != progress;
+  void _onStatusChanged(AnimationStatus status) {
+    if (status == AnimationStatus.completed && !_triggered) {
+      _triggered = true;
+      HapticFeedback.heavyImpact();
+      widget.onHoldCompleted();
+    }
+  }
+
+  void _startHold() {
+    if (!widget.enabled ||
+        widget.purchaseStatus != PurchaseLifecycleStatus.idle) {
+      return;
+    }
+    _triggered = false;
+    _hapticMilestones.clear();
+    HapticFeedback.mediumImpact();
+    _holdController
+      ..reset()
+      ..forward();
+  }
+
+  void _cancelHold() {
+    if (_holdController.isAnimating && !_triggered) {
+      _holdController.reverse();
+      HapticFeedback.lightImpact();
+    }
   }
 }
