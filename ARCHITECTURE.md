@@ -22,6 +22,7 @@ This keeps widget code simple and makes behavior easier to test and reason about
 
 Historical payload parsing is intentionally pushed off the main thread using `Isolate.run` inside the repository.
 
+- The app loads a heavy historical dataset of 50,000 bid records using `Isolate.run`.
 - The heavy JSON decode + downsampling work happens in a background isolate.
 - The parsed result is returned as a `Future<List<HistoricalBidPoint>>`.
 - The future is cached (`_historicalDataFuture`) so repeated requests do not spawn extra isolates.
